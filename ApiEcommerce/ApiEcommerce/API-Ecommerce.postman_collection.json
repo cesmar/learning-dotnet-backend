@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "47dee93f-c70c-4df3-aae5-35d3e0ffef34",
+		"_postman_id": "f85481f3-123d-4ba6-aafa-9a2b4e2bf6f9",
 		"name": "API-Ecommerce",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "3476954",
-		"_collection_link": "https://cesmars-team.postman.co/workspace/.NET-Back~4e3f6769-2730-4bba-904d-b255e5b298aa/collection/3476954-47dee93f-c70c-4df3-aae5-35d3e0ffef34?action=share&source=collection_link&creator=3476954"
+		"_collection_link": "https://cesmars-team.postman.co/workspace/.NET-Back~4e3f6769-2730-4bba-904d-b255e5b298aa/collection/3476954-f85481f3-123d-4ba6-aafa-9a2b4e2bf6f9?action=share&source=collection_link&creator=3476954"
 	},
 	"item": [
 		{
@@ -16,7 +16,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5055/api/Category",
+							"raw": "http://localhost:5055/api/Categories",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -24,7 +24,7 @@
 							"port": "5055",
 							"path": [
 								"api",
-								"Category"
+								"Categories"
 							]
 						}
 					},
@@ -33,11 +33,21 @@
 				{
 					"name": "Crear una categoría",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzkzMTQxNDU2LCJleHAiOjE3OTMxNDg2NTYsImlhdCI6MTc5MzE0MTQ1Nn0.JvkS_HCXVnE7Z6K5c5mcvtWV008n2JqIJXnaQt0yDBg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Tecnología\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Tecnología 2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +55,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5055/api/Category",
+							"raw": "http://localhost:5055/api/Categories",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -53,7 +63,7 @@
 							"port": "5055",
 							"path": [
 								"api",
-								"Category"
+								"Categories"
 							]
 						}
 					},
@@ -62,11 +72,21 @@
 				{
 					"name": "Actualizar una categoría",
 					"request": {
-						"method": "POST",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzkzMTQxNDU2LCJleHAiOjE3OTMxNDg2NTYsImlhdCI6MTc5MzE0MTQ1Nn0.JvkS_HCXVnE7Z6K5c5mcvtWV008n2JqIJXnaQt0yDBg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Tecnología\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Tecnología 2 upd\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -74,7 +94,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5055/api/Category",
+							"raw": "http://localhost:5055/api/Categories/1005",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -82,7 +102,8 @@
 							"port": "5055",
 							"path": [
 								"api",
-								"Category"
+								"Categories",
+								"1005"
 							]
 						}
 					},
@@ -91,6 +112,16 @@
 				{
 					"name": "Borrar una categoría",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzkzMTQxNDU2LCJleHAiOjE3OTMxNDg2NTYsImlhdCI6MTc5MzE0MTQ1Nn0.JvkS_HCXVnE7Z6K5c5mcvtWV008n2JqIJXnaQt0yDBg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -103,7 +134,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5055/api/Category/15",
+							"raw": "http://localhost:5055/api/Categories/1005",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -111,8 +142,8 @@
 							"port": "5055",
 							"path": [
 								"api",
-								"Category",
-								"15"
+								"Categories",
+								"1005"
 							]
 						}
 					},
@@ -124,7 +155,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5055/api/Category/1",
+							"raw": "http://localhost:5055/api/Categories/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -132,7 +163,7 @@
 							"port": "5055",
 							"path": [
 								"api",
-								"Category",
+								"Categories",
 								"1"
 							]
 						}
