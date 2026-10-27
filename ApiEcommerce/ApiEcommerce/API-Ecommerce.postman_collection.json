@@ -1,0 +1,358 @@
+{
+	"info": {
+		"_postman_id": "47dee93f-c70c-4df3-aae5-35d3e0ffef34",
+		"name": "API-Ecommerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3476954",
+		"_collection_link": "https://cesmars-team.postman.co/workspace/.NET-Back~4e3f6769-2730-4bba-904d-b255e5b298aa/collection/3476954-47dee93f-c70c-4df3-aae5-35d3e0ffef34?action=share&source=collection_link&creator=3476954"
+	},
+	"item": [
+		{
+			"name": "Categorías",
+			"item": [
+				{
+					"name": "Listado de categorías",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5055/api/Category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5055",
+							"path": [
+								"api",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear una categoría",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Tecnología\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5055/api/Category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5055",
+							"path": [
+								"api",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar una categoría",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Tecnología\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5055/api/Category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5055",
+							"path": [
+								"api",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar una categoría",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Tecnología\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5055/api/Category/15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5055",
+							"path": [
+								"api",
+								"Category",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener una categoría",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5055/api/Category/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5055",
+							"path": [
+								"api",
+								"Category",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Listado de usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5055/api/Users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5055",
+							"path": [
+								"api",
+								"Users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de usuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"devi-2029\",\r\n    \"name\": \"Devi Develop\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"Admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5055/api/Users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5055",
+							"path": [
+								"api",
+								"Users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Creación de usuario - Ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"devi-2029\",\r\n    \"name\": \"Devi Develop\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"Admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5055/api/Users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5055",
+									"path": [
+										"api",
+										"Users"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 27 Oct 2026 22:02:27 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Location",
+									"value": "http://localhost:5055/api/Users/1004"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1004,\n    \"name\": \"Devi Develop\",\n    \"username\": \"devi-2029\",\n    \"password\": \"$2a$11$Wmf1QtOXgwhutfX4msSWgOXKsET0ZLfO9chMW1YP8fIJ00x0A7zaW\",\n    \"role\": \"Admin\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Acceso de usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5055/api/Users/Login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5055",
+							"path": [
+								"api",
+								"Users",
+								"Login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Acceso de usuario - Ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5055/api/Users/Login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5055",
+									"path": [
+										"api",
+										"Users",
+										"Login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 27 Oct 2026 21:59:16 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"user\": {\n        \"id\": null,\n        \"username\": \"admin\",\n        \"password\": \"$2a$11$xM5d/lUU6CwdgCMTKFhctOZehQq5gQAGv0yc4vkJswl4W3KdU.lRy\",\n        \"name\": \"Admin\",\n        \"role\": \"admin\"\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzkzMTM4MzU3LCJleHAiOjE3OTMxNDU1NTcsImlhdCI6MTc5MzEzODM1N30.JgGw6BvgcdwkivOMNodrWicg2QZ4vTMTgPYhHrevP5M\",\n    \"message\": \"Usuario logueado correctamente\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener un usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5055/api/Users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5055",
+							"path": [
+								"api",
+								"Users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
