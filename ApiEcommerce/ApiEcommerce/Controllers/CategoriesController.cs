@@ -39,11 +39,15 @@ namespace ApiEcommerce.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id:int}", Name = "GetCategory")]
+        // [ResponseCache(Duration = 10)]
+        [ResponseCache(CacheProfileName = CacheProfiles.Default10)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetCategory(int id)
         {
+            System.Console.WriteLine($"Categoría con el ID: {id} a las {DateTime.Now}");
             var category = _categoryRepository.GetCategory(id);
+            System.Console.WriteLine($"Respuesta con el ID: {id}");
             if (category == null)
             {
                 return NotFound($"La categoría con el id {id} no existe");
