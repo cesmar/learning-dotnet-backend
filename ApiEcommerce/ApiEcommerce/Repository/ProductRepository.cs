@@ -53,6 +53,14 @@ public class ProductRepository : IProductRepository
             .FirstOrDefault(p => p.ProductId == id);
     }
 
+    public ICollection<Product> GetProductInPages(int pageNumber, int pageSize)
+    {
+        return _db.Products.OrderBy(p => p.ProductId)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+    }
+
     public ICollection<Product> GetProducts()
     {
         return _db.Products
@@ -67,6 +75,11 @@ public class ProductRepository : IProductRepository
             .Where(p => p.CategoryId == categoryId)
             .Include(p => p.Category)
             .OrderBy(p => p.Name).ToList();
+    }
+
+    public int GetTotalProducts()
+    {
+        return _db.Products.Count();
     }
 
     public bool ProductExists(int id)
