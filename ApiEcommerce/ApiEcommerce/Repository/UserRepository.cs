@@ -1,10 +1,11 @@
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ApiEcommerce.Models;
 using ApiEcommerce.Models.Dtos;
 using ApiEcommerce.Repository.IRepository;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,28 +14,38 @@ namespace ApiEcommerce.Repository;
 public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _db;
-    private readonly string _secretKey;
+    private string? secretKey;
 
-    public UserRepository(ApplicationDbContext db, IConfiguration configuration)
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IMapper _mapper;
+
+    public UserRepository(ApplicationDbContext db, IConfiguration configuration,
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager,
+        IMapper mapper
+    )
     {
         _db = db;
-        _secretKey = configuration.GetValue<string>("ApiSettings:SecretKey"); // ?? throw new ArgumentNullException("ApiSettings:SecretKey is not configured in appsettings.json");
+        secretKey = configuration.GetValue<string>("ApiSettings:SecretKey"); // ?? throw new ArgumentNullException("ApiSettings:SecretKey is not configured in appsettings.json");
+        _userManager = userManager;
+        _roleManager = roleManager;
+        _mapper = mapper;
     }
 
-    public User? GetUser(int id)
+    public ApplicationUser? GetUser(string id)
     {
-        if (id <= 0) return null;
-        return _db.Users.FirstOrDefault(u => u.Id == id);
+        return _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
     }
 
-    public ICollection<User> GetUsers()
+    public ICollection<ApplicationUser> GetUsers()
     {
-        return _db.Users.OrderBy(u => u.Name).ToList();
+        return _db.ApplicationUsers.OrderBy(u => u.UserName).ToList();
     }
 
     public bool IsUniqueUser(string username)
     {
-        return !_db.Users.Any(u => u.Username.ToLower().Trim() == username.ToLower().Trim());
+        return !_db.ApplicationUsers.Any(u => u.UserName.ToLower().Trim() == username.ToLower().Trim());
     }
 
     public async Task<UserLoginResponseDto> Login(UserLoginDto userLoginDto)
@@ -48,7 +59,10 @@ public class UserRepository : IUserRepository
                 Message = "El Username es requerido"
             };
         }
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Username.ToLower().Trim() == userLoginDto.Username.ToLower().Trim());
+        // var user = await _db.Users.FirstOrDefaultAsync(u => u.Username.ToLower().Trim() == userLoginDto.Username.ToLower().Trim());
+        var user = await _db.ApplicationUsers.FirstOrDefaultAsync<ApplicationUser>(u =>
+            u.UserName != null &&
+            u.UserName.ToLower().Trim() == userLoginDto.Username.ToLower().Trim());
         if (user == null)
         {
             return new UserLoginResponseDto
@@ -58,7 +72,21 @@ public class UserRepository : IUserRepository
                 Message = "Username no encontrado"
             };
         }
-        if (!BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.Password))
+
+        if (userLoginDto.Password == null)
+        {
+            return new UserLoginResponseDto
+            {
+                Token = "",
+                User = null,
+                Message = "Password requerido"
+            };
+        }
+
+        bool isValid = await _userManager.CheckPasswordAsync(user, userLoginDto.Password);
+
+        // if (!BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.Password))
+        if (!isValid)
         {
             return new UserLoginResponseDto
             {
@@ -70,18 +98,21 @@ public class UserRepository : IUserRepository
 
         //JWT
         var handlerToken = new JwtSecurityTokenHandler();
-        if (string.IsNullOrEmpty(_secretKey))
+        if (string.IsNullOrEmpty(secretKey))
         {
             throw new InvalidOperationException("SecretKey no está configurada");
         }
-        var key = Encoding.UTF8.GetBytes(_secretKey);
+
+        var roles = await _userManager.GetRolesAsync(user);
+
+        var key = Encoding.UTF8.GetBytes(secretKey);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim("id", user.Id.ToString()),
-                new Claim("username", user.Username),
-                new Claim(ClaimTypes.Role, user.Role ?? string.Empty),
+                new Claim("username", user.UserName ?? string.Empty),
+                new Claim(ClaimTypes.Role, roles.FirstOrDefault() ?? string.Empty),
             }),
             Expires = DateTime.UtcNow.AddHours(2),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -91,29 +122,47 @@ public class UserRepository : IUserRepository
         return new UserLoginResponseDto
         {
             Token = handlerToken.WriteToken(token),
-            User = new UserRegisterDto
-            {
-                Username = user.Username,
-                Name = user.Name,
-                Role = user.Role,
-                Password = user.Password ?? ""
-            },
+            User = _mapper.Map<UserDataDto>(user),
             Message = "Usuario logueado correctamente"
         };
     }
 
-    public async Task<User> Register(CreateUserDto createUserDto)
+    public async Task<UserDataDto> Register(CreateUserDto createUserDto)
     {
-        var encryptedPassword = BCrypt.Net.BCrypt.HashPassword(createUserDto.Password);
-        var user = new User
+        if (string.IsNullOrEmpty(createUserDto.Username))
         {
-            Username = createUserDto.Username ?? "No Username",
-            Name = createUserDto.Name,
-            Role = createUserDto.Role,
-            Password = encryptedPassword,
+            throw new ArgumentNullException("El Username es requerido");
+        }
+
+        if (createUserDto.Password == null)
+        {
+            throw new ArgumentNullException("El Password es requerido");
+        }
+
+        var user = new ApplicationUser()
+        {
+            UserName = createUserDto.Username,
+            Email = createUserDto.Username,
+            NormalizedEmail = createUserDto.Username.ToUpper(),
+            Name = createUserDto.Name
         };
-        _db.Users.Add(user);
-        await _db.SaveChangesAsync();
-        return user;
+
+        var result = await _userManager.CreateAsync(user, createUserDto.Password);
+        if (result.Succeeded)
+        {
+            var userRole = createUserDto.Role ?? "User";
+            var roleExists = await _roleManager.RoleExistsAsync(userRole);
+            if (!roleExists)
+            {
+                var identityRole = new IdentityRole(userRole);
+                await _roleManager.CreateAsync(identityRole);
+            }
+            await _userManager.AddToRoleAsync(user, userRole);
+            var createdUser = _db.ApplicationUsers.FirstOrDefault(u => u.UserName == createUserDto.Username);
+
+            return _mapper.Map<UserDataDto>(createdUser);
+        }
+
+        throw new ApplicationException("No se pudo realizar el registro");
     }
 }
