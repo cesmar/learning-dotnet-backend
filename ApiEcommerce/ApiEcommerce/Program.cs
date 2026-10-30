@@ -1,6 +1,7 @@
 using System.Text;
 using ApiEcommerce.Constants;
 using ApiEcommerce.Data;
+using ApiEcommerce.Mapping;
 using ApiEcommerce.Models;
 using ApiEcommerce.Repository;
 using ApiEcommerce.Repository.IRepository;
@@ -33,7 +34,7 @@ builder.Services.AddResponseCaching(options =>
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+MapsterConfig.Register();
 
 // builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

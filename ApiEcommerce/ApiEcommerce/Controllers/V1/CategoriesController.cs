@@ -3,7 +3,7 @@ using ApiEcommerce.Models;
 using ApiEcommerce.Models.Dtos;
 using ApiEcommerce.Repository.IRepository;
 using Asp.Versioning;
-using AutoMapper;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,12 +17,9 @@ namespace ApiEcommerce.Controllers.V1
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IMapper _mapper;
-
-        public CategoriesController(ICategoryRepository categoryRepository, IMapper mapper)
+        public CategoriesController(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
-            _mapper = mapper;
         }
 
         [AllowAnonymous]
@@ -34,7 +31,7 @@ namespace ApiEcommerce.Controllers.V1
         public IActionResult GetCategories()
         {
             var categories = _categoryRepository.GetCategories();
-            var categoriesDto = _mapper.Map<ICollection<CategoryDto>>(categories);
+            var categoriesDto = categories.Adapt<ICollection<CategoryDto>>();
             return Ok(categoriesDto);
         }
 
@@ -53,7 +50,7 @@ namespace ApiEcommerce.Controllers.V1
             {
                 return NotFound($"La categoría con el id {id} no existe");
             }
-            var categoryDto = _mapper.Map<CategoryDto>(category);
+            var categoryDto = category.Adapt<CategoryDto>();
             return Ok(categoryDto);
         }
 
@@ -76,7 +73,7 @@ namespace ApiEcommerce.Controllers.V1
                 return BadRequest(ModelState);
             }
 
-            var category = _mapper.Map<Category>(createCategoryDto);
+            var category = createCategoryDto.Adapt<Category>();
             if (!_categoryRepository.CreateCategory(category))
             {
                 ModelState.AddModelError("CustomError", $"Algo salió mal al guardar el registro {category.Name}");
@@ -110,7 +107,7 @@ namespace ApiEcommerce.Controllers.V1
                 return BadRequest(ModelState);
             }
 
-            var category = _mapper.Map<Category>(updateCategoryDto);
+            var category = updateCategoryDto.Adapt<Category>();
             category.Id = id;
             if (!_categoryRepository.UpdateCategory(category))
             {
